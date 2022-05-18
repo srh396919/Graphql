@@ -7,12 +7,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo3.api.Optional
-import com.apollographql.apollo3.exception.ApolloException
 import kotlinx.coroutines.channels.Channel
 
 class MainActivity : AppCompatActivity() {
     private val launches = mutableListOf<LaunchListQuery.Launch>()
-    val adapter = LaunchListAdapter(launches)
+    private val adapter = LaunchListAdapter(launches)
 
 
 
