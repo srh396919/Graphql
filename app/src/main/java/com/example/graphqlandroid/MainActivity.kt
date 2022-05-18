@@ -1,7 +1,6 @@
 package com.example.graphqlandroid
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,14 +34,6 @@ class MainActivity : AppCompatActivity() {
                 val response =
                     apolloClient.query(LaunchListQuery(Optional.Present(cursor)))
                         .execute()
-            /*   val response = try {
-                    apolloClient.query(LaunchListQuery(Optional.Present(cursor)))
-                        .execute()
-                } catch (e: ApolloException) {
-                    Log.d("LaunchList", "Failure", e)
-                    return@launchWhenResumed
-                }*/
-
 
                 val newLaunches = response.data?.launches?.launches?.filterNotNull()
               //  val adapter = newLaunches?.let { LaunchListAdapter(it) }
@@ -51,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (newLaunches != null) {
                     launches.addAll(newLaunches)
-                    adapter?.notifyDataSetChanged()
+                    adapter.notifyDataSetChanged()
                 }
 
                 cursor = response.data?.launches?.cursor
@@ -63,23 +54,5 @@ class MainActivity : AppCompatActivity() {
             adapter.onEndOfListReached = null
             channel.close()
         }
-    }
-
-    private suspend fun fetchData() {
-        // getting the recyclerview by its id
-        val recyclerview = findViewById<RecyclerView>(R.id.launches)
-        val response = apolloClient.query(LaunchListQuery()).execute()
-        val newLaunches = response.data?.launches?.launches?.filterNotNull()
-        val adapter = newLaunches?.let { LaunchListAdapter(it) }
-        // this creates a vertical layout Manager
-        recyclerview.layoutManager = LinearLayoutManager(this)
-        recyclerview.adapter = adapter
-        Log.d("LaunchList", "Success ${response.data}")
-        if (newLaunches != null) {
-            launches.addAll(newLaunches)
-            adapter?.notifyDataSetChanged()
-        }
-
-
     }
 }
